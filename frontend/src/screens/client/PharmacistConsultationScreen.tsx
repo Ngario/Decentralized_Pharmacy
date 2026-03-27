@@ -49,30 +49,35 @@ export default function PharmacistConsultationScreen() {
   }, [consultationId]);
 
   return (
-    <div style={{ padding: 16 }}>
-      <button onClick={() => navigate('/products')} style={{ marginBottom: 12 }}>
+    <div className="p-4 md:p-6 max-w-6xl mx-auto">
+      <button
+        type="button"
+        onClick={() => navigate('/products')}
+        className="mb-5 inline-flex items-center px-4 py-2 rounded-lg bg-white/70 hover:bg-white/90 border border-white/60 shadow-card text-gray-900 font-semibold transition"
+      >
         Back
       </button>
 
-      <h2>Pharmacist Consultation</h2>
-      <div style={{ fontSize: 14, marginBottom: 12 }}>
+      <h2 className="text-2xl font-extrabold text-gray-900">Pharmacist Consultation</h2>
+      <div className="text-sm md:text-base text-gray-800 mt-2 mb-4">
         Consultation ID: <b>{consultationId ?? '-'}</b>
       </div>
 
-      <div style={{ marginTop: 10 }}>
-        {loading ? <div>Waiting for pharmacist recommendations…</div> : null}
-        {error ? <div style={{ color: 'red' }}>{error}</div> : null}
+      <div className="mt-2">
+        {loading ? <div className="text-gray-800">Waiting for pharmacist recommendations…</div> : null}
+        {error ? <div className="text-red-700">{error}</div> : null}
       </div>
 
-      <h3 style={{ marginTop: 18 }}>Recommended products</h3>
+      <h3 className="mt-6 text-xl font-extrabold text-gray-900">Recommended products</h3>
       {recommendations.length === 0 ? <div>No recommendations yet.</div> : null}
 
-      <div style={{ display: 'grid', gap: 10 }}>
+      <div className="grid gap-3 md:gap-4">
         {recommendations.map((r) => (
-          <div key={r.medicineSkuId} style={{ border: '1px solid #eee', borderRadius: 12, padding: 12 }}>
-            <div style={{ fontWeight: 700 }}>{r.medicineSkuId}</div>
-            <div style={{ fontSize: 13, color: '#555' }}>Qty: {r.qty}</div>
+          <div key={r.medicineSkuId} className="rounded-xl border border-white/60 bg-white/80 backdrop-blur shadow-card p-4">
+            <div className="font-bold text-gray-900">{r.medicineSkuId}</div>
+            <div className="text-sm text-gray-600 mt-1">Qty: {r.qty}</div>
             <button
+              type="button"
               onClick={async () => {
                 if (!cartId) {
                   alert('Missing cartId.');
@@ -81,7 +86,7 @@ export default function PharmacistConsultationScreen() {
                 await addCartItem({ cartId, medicineSkuId: r.medicineSkuId, qty: r.qty });
                 alert('Added to cart.');
               }}
-              style={{ marginTop: 10, padding: 10, width: '100%', cursor: 'pointer' }}
+              className="mt-3 w-full rounded-lg bg-brandPrimary text-white px-3 py-2 font-bold hover:bg-brandPrimary/90 transition"
             >
               Add to cart
             </button>
@@ -89,8 +94,12 @@ export default function PharmacistConsultationScreen() {
         ))}
       </div>
 
-      <div style={{ marginTop: 16 }}>
-        <button onClick={() => navigate('/cart', { state: { cartId } })} style={{ padding: 12, width: '100%', cursor: 'pointer' }}>
+      <div className="mt-5">
+        <button
+          type="button"
+          onClick={() => navigate('/cart', { state: { cartId } })}
+          className="w-full rounded-lg bg-white/80 border border-white/60 px-4 py-3 font-bold text-gray-900 hover:bg-white/95 transition"
+        >
           Go to Cart & Checkout
         </button>
       </div>

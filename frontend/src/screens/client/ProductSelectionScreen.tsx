@@ -98,65 +98,93 @@ export default function ProductSelectionScreen() {
   }
 
   return (
-    <div style={{ padding: 16 }}>
-      <button onClick={() => navigate('/')} style={{ marginBottom: 12 }}>
+    <div className="p-4 md:p-6 max-w-6xl mx-auto">
+      <button
+        type="button"
+        onClick={() => navigate('/')}
+        className="mb-5 inline-flex items-center px-4 py-2 rounded-lg bg-white/70 hover:bg-white/90 border border-white/60 shadow-card text-gray-900 font-semibold transition"
+      >
         Back
       </button>
 
-      <h2>Choose products</h2>
+      <h2 className="text-2xl font-extrabold text-gray-900">Choose products</h2>
 
-      <div style={{ marginTop: 12, marginBottom: 12 }}>
-        <label style={{ display: 'block', marginBottom: 6 }}>Phone number (M-Pesa)</label>
-        <input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} style={{ width: '100%', padding: 10 }} />
+      <div className="mt-5 mb-4 space-y-2">
+        <label className="block text-sm font-semibold text-gray-800 mb-2">Phone number (M-Pesa)</label>
+        <input
+          value={clientPhone}
+          onChange={(e) => setClientPhone(e.target.value)}
+          className="w-full rounded-lg border border-white/60 bg-white/80 backdrop-blur px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brandPrimary/30"
+        />
       </div>
 
-      <div style={{ marginTop: 12, marginBottom: 12 }}>
-        <label style={{ display: 'block', marginBottom: 6 }}>Symptoms (optional)</label>
-        <textarea value={symptomsText} onChange={(e) => setSymptomsText(e.target.value)} style={{ width: '100%', padding: 10, minHeight: 80 }} />
+      <div className="mt-4 mb-4 space-y-2">
+        <label className="block text-sm font-semibold text-gray-800 mb-2">Symptoms (optional)</label>
+        <textarea
+          value={symptomsText}
+          onChange={(e) => setSymptomsText(e.target.value)}
+          className="w-full rounded-lg border border-white/60 bg-white/80 backdrop-blur px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brandPrimary/30 min-h-[80px]"
+        />
       </div>
 
-      <div style={{ marginTop: 12, marginBottom: 12 }}>
-        <button onClick={handleGetSuggestions} disabled={loadingSuggestions} style={{ padding: 12, width: '100%', cursor: 'pointer' }}>
+      <div className="mt-4 mb-4">
+        <button
+          type="button"
+          onClick={handleGetSuggestions}
+          disabled={loadingSuggestions}
+          className="w-full rounded-lg bg-brandPrimary text-white px-4 py-3 font-bold hover:bg-brandPrimary/90 disabled:opacity-70 disabled:cursor-not-allowed transition"
+        >
           {loadingSuggestions ? 'Getting suggestions…' : 'Get OTC suggestions'}
         </button>
       </div>
 
-      {serverDisclaimer ? <div style={{ fontSize: 13, marginBottom: 12 }}>{serverDisclaimer}</div> : null}
+      {serverDisclaimer ? (
+        <div className="text-sm text-gray-700 mb-4">{serverDisclaimer}</div>
+      ) : null}
 
-      {error ? <div style={{ color: 'red', marginBottom: 12 }}>{error}</div> : null}
+      {error ? <div className="text-sm text-red-700 mb-4">{error}</div> : null}
 
-      <h3 style={{ marginTop: 18 }}>Suggestions</h3>
-      <div style={{ display: 'grid', gap: 10 }}>
+      <h3 className="mt-6 mb-3 text-xl font-extrabold text-gray-900">Suggestions</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
         {suggestions.map((s) => (
-          <div key={s.medicineSkuId} style={{ border: '1px solid #ddd', borderRadius: 12, padding: 12 }}>
-            <div style={{ fontWeight: 700 }}>{s.name}</div>
-            <div style={{ fontSize: 13, color: '#555' }}>{s.packSize}</div>
-            <div style={{ marginTop: 6, fontSize: 14 }}>KSh {Math.round(s.unitPriceCents / 100)}.00</div>
-            {s.requiresPharmacistReview ? <div style={{ marginTop: 6, fontSize: 12, color: '#b45309' }}>Pharmacist review required</div> : null}
-            <button onClick={() => handleAddToCart(s)} style={{ marginTop: 10, padding: 10, width: '100%', cursor: 'pointer' }}>
+          <div key={s.medicineSkuId} className="rounded-xl border border-white/60 bg-white/80 backdrop-blur shadow-card p-4">
+            <div className="font-bold text-gray-900">{s.name}</div>
+            <div className="text-sm text-gray-600 mt-1">{s.packSize}</div>
+            <div className="mt-3 text-base font-extrabold text-gray-900">
+              KSh {Math.round(s.unitPriceCents / 100)}.00
+            </div>
+            {s.requiresPharmacistReview ? (
+              <div className="mt-2 text-xs font-semibold text-brandAccent">Pharmacist review required</div>
+            ) : null}
+            <button
+              type="button"
+              onClick={() => handleAddToCart(s)}
+              className="mt-3 w-full rounded-lg bg-white/90 border border-white/70 hover:bg-white px-3 py-2 font-bold text-gray-900 transition"
+            >
               Add to cart
             </button>
           </div>
         ))}
       </div>
 
-      <div style={{ marginTop: 18, paddingTop: 16, borderTop: '1px solid #eee' }}>
-        <h3>Cart</h3>
+      <div className="mt-8 pt-5 border-t border-white/50">
+        <h3 className="text-xl font-extrabold text-gray-900">Cart</h3>
         {cartItems.length === 0 ? <div>No items yet.</div> : null}
-        <div style={{ display: 'grid', gap: 10, marginTop: 10 }}>
+        <div className="grid gap-3 mt-4">
           {cartItems.map((it) => (
-            <div key={it.medicineSkuId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
+            <div key={it.medicineSkuId} className="flex items-center justify-between gap-3">
               <div>
-                <div style={{ fontWeight: 700 }}>{it.suggestion?.name ?? it.medicineSkuId}</div>
-                <div style={{ fontSize: 13, color: '#555' }}>Qty: {it.qty}</div>
+                <div className="font-bold text-gray-900">{it.suggestion?.name ?? it.medicineSkuId}</div>
+                <div className="text-sm text-gray-600 mt-1">Qty: {it.qty}</div>
               </div>
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div className="flex gap-2">
                 <button
                   onClick={async () => {
                     // MVP: remove then re-add; later implement qty stepper endpoint.
                     await handleRemove(it.medicineSkuId);
                   }}
-                  style={{ padding: 8, cursor: 'pointer' }}
+                  type="button"
+                  className="px-3 py-2 rounded-lg border border-white/60 bg-white/70 hover:bg-white/90 transition text-gray-900 font-semibold"
                 >
                   Remove
                 </button>
@@ -165,10 +193,13 @@ export default function ProductSelectionScreen() {
           ))}
         </div>
 
-        <div style={{ marginTop: 12, fontWeight: 800 }}>Total: KSh {Math.round(cartTotalCents / 100)}.00</div>
+        <div className="mt-5 text-lg font-extrabold text-gray-900">
+          Total: KSh {Math.round(cartTotalCents / 100)}.00
+        </div>
 
-        <div style={{ marginTop: 12, display: 'grid', gap: 10 }}>
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
           <button
+            type="button"
             onClick={async () => {
               if (!cartId) {
                 alert('Add an item to cart first.');
@@ -176,12 +207,16 @@ export default function ProductSelectionScreen() {
               }
               navigate('/cart', { state: { cartId, cartItems } });
             }}
-            style={{ padding: 12, width: '100%', cursor: 'pointer' }}
+            className="w-full rounded-lg bg-brandPrimary text-white px-4 py-3 font-bold hover:bg-brandPrimary/90 transition"
           >
             Checkout
           </button>
 
-          <button onClick={handleConsultant} style={{ padding: 12, width: '100%', cursor: 'pointer' }}>
+          <button
+            type="button"
+            onClick={handleConsultant}
+            className="w-full rounded-lg bg-white/80 border border-white/60 px-4 py-3 font-bold text-gray-900 hover:bg-white/95 transition"
+          >
             Call/Chat with Pharmacist
           </button>
         </div>

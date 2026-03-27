@@ -98,69 +98,91 @@ export default function CartCheckoutScreen() {
     }
   }
 
-  if (error) return <div style={{ padding: 16, color: 'red' }}>{error}</div>;
+  if (error)
+    return (
+      <div className="p-6 max-w-6xl mx-auto text-red-700">
+        {error}
+      </div>
+    );
 
   return (
-    <div style={{ padding: 16 }}>
-      <button onClick={() => navigate('/products')} style={{ marginBottom: 12 }}>
+    <div className="p-4 md:p-6 max-w-6xl mx-auto">
+      <button
+        type="button"
+        onClick={() => navigate('/products')}
+        className="mb-5 inline-flex items-center px-4 py-2 rounded-lg bg-white/70 hover:bg-white/90 border border-white/60 shadow-card text-gray-900 font-semibold transition"
+      >
         Back
       </button>
 
-      <h2>Checkout</h2>
+      <h2 className="text-2xl font-extrabold text-gray-900">Checkout</h2>
 
-      <div style={{ marginTop: 12, marginBottom: 12 }}>
-        <label style={{ display: 'block', marginBottom: 6 }}>Phone number (M-Pesa)</label>
-        <input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} style={{ width: '100%', padding: 10 }} />
+      <div className="mt-4 mb-4">
+        <label className="block text-sm font-semibold text-gray-800 mb-2">Phone number (M-Pesa)</label>
+        <input
+          value={clientPhone}
+          onChange={(e) => setClientPhone(e.target.value)}
+          className="w-full rounded-lg border border-white/60 bg-white/80 backdrop-blur px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brandPrimary/30"
+        />
       </div>
 
-      <div style={{ marginTop: 12, marginBottom: 12 }}>
-        <label style={{ display: 'block', marginBottom: 6 }}>Symptoms (optional, for record)</label>
-        <textarea value={symptomsText} onChange={(e) => setSymptomsText(e.target.value)} style={{ width: '100%', padding: 10, minHeight: 80 }} />
+      <div className="mt-4 mb-4">
+        <label className="block text-sm font-semibold text-gray-800 mb-2">Symptoms (optional, for record)</label>
+        <textarea
+          value={symptomsText}
+          onChange={(e) => setSymptomsText(e.target.value)}
+          className="w-full rounded-lg border border-white/60 bg-white/80 backdrop-blur px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-brandPrimary/30 min-h-[80px]"
+        />
       </div>
 
-      <h3>Items</h3>
-      <div style={{ display: 'grid', gap: 10 }}>
+      <h3 className="text-xl font-extrabold text-gray-900">Items</h3>
+      <div className="grid gap-3 mt-3">
         {items.map((it) => (
-          <div key={it.medicineSkuId} style={{ border: '1px solid #eee', borderRadius: 12, padding: 12 }}>
-            <div style={{ fontWeight: 700 }}>{it.suggestion?.name ?? it.medicineSkuId}</div>
-            <div style={{ fontSize: 13, color: '#555' }}>Qty: {it.qty}</div>
+          <div key={it.medicineSkuId} className="rounded-xl border border-white/60 bg-white/80 backdrop-blur shadow-card p-4">
+            <div className="font-bold text-gray-900">{it.suggestion?.name ?? it.medicineSkuId}</div>
+            <div className="text-sm text-gray-600 mt-1">Qty: {it.qty}</div>
           </div>
         ))}
       </div>
 
-      <div style={{ marginTop: 16, fontWeight: 800 }}>
+      <div className="mt-5 text-lg font-extrabold text-gray-900">
         Total: KSh {Math.round(totalCents / 100)}.00
       </div>
 
-      <div style={{ marginTop: 12 }}>
-        <button onClick={handlePay} disabled={loading || paymentPhase === 'DISPENSING' || paymentPhase === 'DONE'} style={{ padding: 12, width: '100%', cursor: 'pointer' }}>
+      <div className="mt-4">
+        <button
+          type="button"
+          onClick={handlePay}
+          disabled={loading || paymentPhase === 'DISPENSING' || paymentPhase === 'DONE'}
+          className="w-full rounded-lg bg-brandPrimary text-white px-4 py-3 font-bold hover:bg-brandPrimary/90 disabled:opacity-70 disabled:cursor-not-allowed transition"
+        >
           {paymentPhase === 'IDLE' ? 'Pay with M-Pesa' : 'Processing…'}
         </button>
       </div>
 
-      <div style={{ marginTop: 16 }}>
-        <h3>Status</h3>
-        <div style={{ fontSize: 14 }}>
+      <div className="mt-6">
+        <h3 className="text-xl font-extrabold text-gray-900">Status</h3>
+        <div className="text-sm md:text-base text-gray-800 mt-2">
           Phase: <b>{paymentPhase}</b>
         </div>
-        <div style={{ fontSize: 14, marginTop: 6 }}>
+        <div className="text-sm md:text-base text-gray-800 mt-1">
           Order status: <b>{orderStatus ?? '-'}</b>
         </div>
 
         {requiresPharmacistApproval && paymentPhase !== 'DONE' ? (
-          <div style={{ marginTop: 10, fontSize: 14 }}>
+          <div className="mt-4 p-4 rounded-xl border border-brandAccent/30 bg-white/70 text-sm text-gray-800">
             A pharmacist must review your request before dispensing.
           </div>
         ) : null}
 
         {paymentPhase === 'DONE' ? (
-          <div style={{ marginTop: 10, border: '1px solid #22c55e', padding: 12, borderRadius: 12 }}>
+          <div className="mt-4 p-4 rounded-xl border border-green-400/60 bg-white/70 text-sm text-gray-800">
             Payment verified. Dispensing complete.
           </div>
         ) : null}
 
         {paymentPhase === 'FAILED' ? (
-          <div style={{ marginTop: 10, border: '1px solid #ef4444', padding: 12, borderRadius: 12 }}>
+          <div className="mt-4 p-4 rounded-xl border border-red-400/60 bg-white/70 text-sm text-gray-800">
             Payment failed or dispensing error. Please try again.
           </div>
         ) : null}

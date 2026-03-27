@@ -34,43 +34,49 @@ export default function RequestsQueueScreen() {
   }, []);
 
   return (
-    <div style={{ padding: 16 }}>
-      <h2>Pharmacist - Requests Queue</h2>
-      <button onClick={load} style={{ padding: 10, cursor: 'pointer' }}>
+    <div className="p-4 md:p-6 max-w-6xl mx-auto">
+      <h2 className="text-2xl font-extrabold text-gray-900">Pharmacist - Requests Queue</h2>
+      <button
+        type="button"
+        onClick={load}
+        className="mt-4 inline-flex items-center px-4 py-2 rounded-lg bg-white/70 hover:bg-white/90 border border-white/60 shadow-card text-gray-900 font-semibold transition"
+      >
         Refresh
       </button>
 
-      {loading ? <div style={{ marginTop: 12 }}>Loading…</div> : null}
-      {error ? <div style={{ color: 'red', marginTop: 12 }}>{error}</div> : null}
+      {loading ? <div className="mt-4 text-gray-800">Loading…</div> : null}
+      {error ? <div className="text-red-700 mt-4">{error}</div> : null}
 
-      <div style={{ marginTop: 16, display: 'grid', gap: 12 }}>
+      <div className="mt-6 grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
         {requests.length === 0 ? <div>No open requests.</div> : null}
 
         {requests.map((r) => (
-          <div key={r.id} style={{ border: '1px solid #eee', padding: 12, borderRadius: 12 }}>
-            <div style={{ fontWeight: 800 }}>Request {r.id}</div>
-            <div style={{ fontSize: 13, color: '#555' }}>Order: {r.orderId}</div>
-            <div style={{ fontSize: 13, color: '#555' }}>Client: {r.clientPhone}</div>
-            <div style={{ fontSize: 13, color: '#555' }}>Status: {r.status}</div>
+          <div key={r.id} className="rounded-xl border border-white/60 bg-white/80 backdrop-blur shadow-card p-4">
+            <div className="font-extrabold text-gray-900">Request {r.id}</div>
+            <div className="text-sm text-gray-600 mt-1">Order: {r.orderId}</div>
+            <div className="text-sm text-gray-600 mt-1">Client: {r.clientPhone}</div>
+            <div className="text-sm text-gray-600 mt-1">Status: {r.status}</div>
 
-            <div style={{ marginTop: 10, display: 'grid', gap: 10 }}>
+            <div className="mt-4 grid gap-3">
               <button
+                type="button"
                 onClick={async () => {
                   const approvedItems = r.recommendedItems && r.recommendedItems.length > 0 ? r.recommendedItems : [{ medicineSkuId: fallbackSku, qty: 1 }];
                   await approvePharmacistRequest({ requestId: r.id, approvedItems });
                   await load();
                 }}
-                style={{ padding: 10, cursor: 'pointer' }}
+                className="w-full rounded-lg bg-brandPrimary text-white px-3 py-2 font-bold hover:bg-brandPrimary/90 transition"
               >
                 Approve
               </button>
 
               <button
+                type="button"
                 onClick={async () => {
                   await rejectPharmacistRequest({ requestId: r.id, notes: 'Rejected by pharmacist' });
                   await load();
                 }}
-                style={{ padding: 10, cursor: 'pointer', border: '1px solid #fca5a5' }}
+                className="w-full rounded-lg bg-white/70 border border-red-300 px-3 py-2 font-bold text-red-700 hover:bg-white/90 transition"
               >
                 Reject
               </button>
