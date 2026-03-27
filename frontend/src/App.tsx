@@ -5,23 +5,45 @@ import ProductSelectionScreen from './screens/client/ProductSelectionScreen';
 import CartCheckoutScreen from './screens/client/CartCheckoutScreen';
 import PharmacistConsultationScreen from './screens/client/PharmacistConsultationScreen';
 import RequestsQueueScreen from './screens/pharmacist/RequestsQueueScreen';
+import DawaPageLayout from './components/layout/DawaPageLayout';
 
 export default function App() {
   return (
-    <div
-      className="min-h-screen bg-gradient-to-br from-[#F16D8B]/35 via-[#F25571]/20 to-[#D87F89]/30"
-      style={{ paddingBottom: 24 }}
-    >
-      <Routes>
-        <Route path="/" element={<LandingScreen />} />
-        <Route path="/products" element={<ProductSelectionScreen />} />
-        <Route path="/consult" element={<PharmacistConsultationScreen />} />
-        <Route path="/cart" element={<CartCheckoutScreen />} />
-        <Route path="/pharmacist/requests" element={<RequestsQueueScreen />} />
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <DawaPageLayout
+            title="DawaFlow"
+            subtitle="OTC-only vending. For severe symptoms, visit a clinician or talk to a pharmacist."
+          >
+            <LandingScreen />
+          </DawaPageLayout>
+        }
+      />
+      <Route
+        path="/products"
+        element={
+          <DawaPageLayout title="DawaFlow" subtitle="OTC-only vending. Choose your category and checkout.">
+            <ProductSelectionScreen />
+          </DawaPageLayout>
+        }
+      />
+      <Route
+        path="/consult"
+        element={<DawaPageLayout title="DawaFlow" subtitle="Pharmacist consultation (optional)."> <PharmacistConsultationScreen /> </DawaPageLayout>}
+      />
+      <Route
+        path="/cart"
+        element={<DawaPageLayout title="DawaFlow" subtitle="Pay via M-Pesa, then dispensing follows."> <CartCheckoutScreen /> </DawaPageLayout>}
+      />
+      <Route
+        path="/pharmacist/requests"
+        element={<DawaPageLayout title="DawaFlow" subtitle="Pharmacist dashboard - approve/reject."> <RequestsQueueScreen /> </DawaPageLayout>}
+      />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </div>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
